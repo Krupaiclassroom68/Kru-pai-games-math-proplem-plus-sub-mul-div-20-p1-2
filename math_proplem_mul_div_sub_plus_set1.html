@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>Story Math · ระคน + − × ÷ · Kru Pai Classroom</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Tahoma", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #fff9c4 0, #81d4fa 40%, #01579b 100%);
+      color: #0d1b2a;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 900px;
+      padding: 16px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+      border: 2px solid #ffeb3b;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      text-align: center;
+      color: #0277bd;
+      text-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      text-align: center;
+      color: #ffb300;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #455a64;
+      margin-bottom: 18px;
+      white-space: pre-line;
+    }
+
+    .input-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    label {
+      font-size: 0.95rem;
+    }
+
+    input[type="text"] {
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 2px solid #81d4fa;
+      min-width: 220px;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .lang-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .lang-btn {
+      border-radius: 999px;
+      border: 1px solid #90caf9;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      background: #e3f2fd;
+      color: #01579b;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .lang-btn.active {
+      background: #ffeb3b;
+      color: #000;
+      border-color: #fdd835;
+      box-shadow: 0 0 10px rgba(255, 235, 59, 0.8);
+      font-weight: bold;
+    }
+
+    .primary-btn {
+      display: block;
+      margin: 10px auto 0;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 26px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      background: linear-gradient(135deg, #29b6f6, #0288d1);
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+      transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.15s;
+    }
+
+    .primary-btn:disabled {
+      opacity: 0.5;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .primary-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
+    }
+
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+
+    .tag {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #e3f2fd;
+      color: #01579b;
+      border: 1px solid #81d4fa;
+    }
+
+    .score-tag {
+      background: #fff9c4;
+      color: #e65100;
+      border-color: #ffeb3b;
+      font-weight: bold;
+    }
+
+    .question-box {
+      background: #fffde7;
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      border: 1px solid #ffe082;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      white-space: normal;
+      color: #4e342e;
+    }
+
+    .equation-area {
+      margin: 14px 0;
+    }
+
+    .equation-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      margin: 6px 0;
+      flex-wrap: wrap;
+    }
+
+    .equation-line-label {
+      min-width: 200px;
+      text-align: right;
+      font-size: 0.95rem;
+      color: #0277bd;
+    }
+
+    .equation-line-slots {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .square-slot,
+    .square-slot.answer-slot {
+      width: 62px;
+      height: 62px;
+      border-radius: 12px;
+      border: 3px solid #29b6f6;
+      background: #ffffff;
+      color: #0277bd;
+      font-size: 1.3rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    .square-slot.answer-slot {
+      border-color: #ffca28;
+      background: #fff8e1;
+      color: #e65100;
+    }
+
+    .circle-slot {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 3px solid #ffca28;
+      background: #fffde7;
+      color: #ff8f00;
+      font-size: 1.6rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    .slot-label {
+      font-size: 1.4rem;
+      padding: 0 6px;
+    }
+
+    .slot.selected {
+      box-shadow: 0 0 0 3px rgba(0, 150, 255, 0.8);
+    }
+
+    .slot.disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    .keypad {
+      margin-top: 8px;
+      background: #e3f2fd;
+      border-radius: 14px;
+      padding: 10px;
+      border: 1px solid #90caf9;
+    }
+
+    .keypad-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .key-btn {
+      min-width: 48px;
+      padding: 10px 0;
+      border-radius: 12px;
+      border: none;
+      background: #29b6f6;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+      transition: transform 0.05s ease, box-shadow 0.05s ease;
+    }
+
+    .key-btn.op {
+      background: #ffca28;
+      color: #000;
+    }
+
+    .key-btn.special {
+      background: #8e24aa;
+      font-size: 0.9rem;
+      padding: 8px 6px;
+    }
+
+    .key-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    .bottom-controls {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .msg-area {
+      min-height: 32px;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #37474f;
+    }
+
+    .emoji {
+      font-size: 1.4rem;
+    }
+
+    .btn-group-right {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .small-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 7px 16px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      background: #0288d1;
+      color: #fff;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    }
+
+    #check-btn {
+      background: linear-gradient(135deg, #00e676, #00c853);
+      font-size: 0.95rem;
+      font-weight: bold;
+      padding: 9px 20px;
+      min-width: 120px;
+    }
+
+    #next-btn {
+      background: #ff9800;
+    }
+
+    #back-home-btn {
+      background: #546e7a;
+    }
+
+    .confetti-piece {
+      position: fixed;
+      width: 10px;
+      height: 14px;
+      background: #ffeb3b;
+      border-radius: 2px;
+      opacity: 0.9;
+      pointer-events: none;
+      animation: confetti-fall 1.5s linear forwards;
+      z-index: 9999;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translate3d(var(--x-start), -60px, 0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate3d(var(--x-end), 110vh, 0) rotate(340deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .square-slot,
+      .square-slot.answer-slot {
+        width: 54px;
+        height: 54px;
+        font-size: 1.1rem;
+      }
+
+      .circle-slot {
+        width: 50px;
+        height: 50px;
+        font-size: 1.4rem;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+      }
+
+      .question-box {
+        font-size: 1rem;
+      }
+
+      .equation-line-label {
+        min-width: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- START SCREEN -->
+    <div id="start-screen" class="card">
+      <h1 id="title-text">Story Math · ระคน + − × ÷</h1>
+      <h2 id="subtitle-brand">Kru Pai Classroom</h2>
+
+      <div class="lang-row">
+        <button class="lang-btn active" data-lang="th">ภาษาไทย</button>
+        <button class="lang-btn" data-lang="en">English</button>
+      </div>
+
+      <p class="subtitle" id="subtitle-detail">
+        เกมโจทย์ปัญหาคณิตศาสตร์ ระคน + − × ÷ สำหรับเด็ก ป.1–2
+อ่านโจทย์แล้วเขียนสมการเองในช่องสี่เหลี่ยมและวงกลม
+      </p>
+
+      <div class="input-row">
+        <div>
+          <label id="label-name" for="student-name">ชื่อนักเรียน :</label><br />
+          <input id="student-name" type="text" placeholder="พิมพ์ชื่อตรงนี้จ้า" />
+        </div>
+      </div>
+
+      <p class="subtitle" id="subtitle-how">
+        ✨ วิธีเล่น: เลือกข้อ, อ่านโจทย์ให้เข้าใจ แล้วเติมตัวเลขและเครื่องหมายให้ครบ
+จากนั้นกด "ตรวจคำตอบ" ถ้าถูกจะมีคอนเฟตตี้ฉลอง 🎉
+      </p>
+
+      <button id="start-btn" class="primary-btn">เริ่มทำโจทย์ 20 ข้อ</button>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="game-screen" class="card" style="display:none;">
+      <div class="top-bar">
+        <div class="tag" id="name-display">👧 ชื่อ: -</div>
+        <div class="tag" id="q-display">ข้อที่ 1/20</div>
+        <div class="tag score-tag" id="score-display">คะแนน: 0/0</div>
+      </div>
+
+      <div class="question-box" id="question-text"></div>
+
+      <div class="equation-area" id="equation-area"></div>
+
+      <div class="keypad">
+        <div class="keypad-row">
+          <button class="key-btn" data-key="7">7</button>
+          <button class="key-btn" data-key="8">8</button>
+          <button class="key-btn" data-key="9">9</button>
+        </div>
+        <div class="keypad-row">
+          <button class="key-btn" data-key="4">4</button>
+          <button class="key-btn" data-key="5">5</button>
+          <button class="key-btn" data-key="6">6</button>
+        </div>
+        <div class="keypad-row">
+          <button class="key-btn" data-key="1">1</button>
+          <button class="key-btn" data-key="2">2</button>
+          <button class="key-btn" data-key="3">3</button>
+        </div>
+        <div class="keypad-row">
+          <button class="key-btn" data-key="0">0</button>
+          <button class="key-btn op" data-key="+">+</button>
+          <button class="key-btn op" data-key="-">-</button>
+        </div>
+        <div class="keypad-row">
+          <button class="key-btn op" data-key="×">×</button>
+          <button class="key-btn op" data-key="÷">÷</button>
+        </div>
+        <div class="keypad-row">
+          <button class="key-btn special" id="clear-slot">ลบช่อง</button>
+          <button class="key-btn special" id="clear-all">ล้างสมการ</button>
+        </div>
+      </div>
+
+      <div class="bottom-controls">
+        <div class="msg-area" id="message-area"></div>
+        <div class="btn-group-right">
+          <button class="small-btn" id="back-home-btn">กลับหน้าแรก</button>
+          <button class="small-btn" id="check-btn">ตรวจคำตอบ</button>
+          <button class="small-btn" id="next-btn">ข้อถัดไป</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ------------------ เสียง ------------------
+    let audioCtx = null;
+    function ensureAudioCtx() {
+      if (!audioCtx) {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return null;
+        audioCtx = new AC();
+      }
+      return audioCtx;
+    }
+
+    function playBeep(freq = 660, duration = 0.08, vol = 0.15) {
+      const ctx = ensureAudioCtx();
+      if (!ctx) return;
+      try {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        const now = ctx.currentTime;
+        gain.gain.setValueAtTime(vol, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+        osc.start(now);
+        osc.stop(now + duration);
+      } catch (e) {}
+    }
+
+    function playSuccessSound() {
+      playBeep(880, 0.07, 0.18);
+      setTimeout(() => playBeep(1200, 0.09, 0.18), 60);
+    }
+
+    function playFailSound() {
+      playBeep(260, 0.12, 0.18);
+    }
+
+    function playFinishSetSound() {
+      playBeep(740, 0.09, 0.18);
+      setTimeout(() => playBeep(980, 0.09, 0.18), 90);
+      setTimeout(() => playBeep(1240, 0.12, 0.2), 180);
+    }
+
+    // --------------- Confetti ---------------
+    function launchConfetti(count = 60) {
+      for (let i = 0; i < count; i++) {
+        const piece = document.createElement("div");
+        piece.className = "confetti-piece";
+        const startX = Math.random() * 100;
+        const endX = startX + (Math.random() * 40 - 20);
+        piece.style.setProperty("--x-start", startX + "vw");
+        piece.style.setProperty("--x-end", endX + "vw");
+        const colors = ["#ffeb3b", "#ff4081", "#40c4ff", "#81c784", "#ffb74d"];
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 1600);
+      }
+    }
+
+    // --------------- ข้อความ 2 ภาษา ---------------
+    const uiText = {
+      th: {
+        title: "Story Math · ระคน + − × ÷",
+        subtitleDetail:
+          "เกมโจทย์ปัญหาคณิตศาสตร์ ระคน + − × ÷ สำหรับเด็ก ป.1–2\nอ่านโจทย์แล้วเขียนสมการเองในช่องสี่เหลี่ยมและวงกลม",
+        labelName: "ชื่อนักเรียน :",
+        namePlaceholder: "พิมพ์ชื่อตรงนี้จ้า",
+        how: "✨ วิธีเล่น: เลือกข้อ, อ่านโจทย์ให้เข้าใจ แล้วเติมตัวเลขและเครื่องหมายให้ครบ\nจากนั้นกด \"ตรวจคำตอบ\" ถ้าถูกจะมีคอนเฟตตี้ฉลอง 🎉",
+        startBtn: "เริ่มทำโจทย์ 20 ข้อ",
+        backHome: "กลับหน้าแรก",
+        check: "ตรวจคำตอบ",
+        next: "ข้อถัดไป",
+        clearSlot: "ลบช่อง",
+        clearAll: "ล้างสมการ",
+        msgHintSelectSlot: "แตะเลือกช่องที่ต้องการกรอกก่อนนะจ๊ะ 💡",
+        msgNeedFillAll: "ลองกรอกให้ครบทุกช่องก่อนนะจ๊ะ ✏️",
+        msgTryAgain: "ยังไม่ตรง ลองแก้อีกครั้งได้นะ 💪",
+        msgShowAnswer: "ยังไม่ถูกนะจ๊ะ นี่คือเฉลยที่ถูกต้อง 🌟",
+        msgCorrect: "เยี่ยมมาก! Wowwww! 🎉",
+        msgStartQuestion: "ลองอ่านโจทย์ให้เข้าใจก่อน แล้วค่อยเติมสมการนะจ๊ะ 💛",
+        msgClearSlotNeedSelect: "เลือกช่องก่อนแล้วค่อยกดลบนะจ๊ะ 🧽",
+        msgResetEq: "ลองเริ่มเติมสมการใหม่อีกครั้งนะ ✏️",
+        topName: name => `👧 ชื่อ: ${name}`,
+        topQ: (index, total) => `ข้อที่ ${index}/${total}`,
+        topScore: (score, totalAsked) => `คะแนน: ${score}/${totalAsked}`,
+        finishPerfect: (score, total) =>
+          `สุดยอดมาก! ได้ ${score}/${total} เต็มเลย 🎉 เก่งมากๆ เลยจ้า`,
+        finishNormal: (score, total) =>
+          `จบ 20 ข้อแล้ว! ได้ ${score}/${total} ข้อ ลองเล่นซ้ำเพื่อเก่งขึ้นได้นะ 🌟`
+      },
+      en: {
+        title: "Story Math · Mixed + − × ÷",
+        subtitleDetail:
+          "Mixed + − × ÷ word problems for Grade 1–2.\nRead the story and write your own equation in the boxes.",
+        labelName: "Student name:",
+        namePlaceholder: "Type your name here",
+        how: "✨ How to play: Read the story, fill in the numbers and sign, then press \"Check\".\nIf your equation is correct, confetti will celebrate! 🎉",
+        startBtn: "Start 20 Problems",
+        backHome: "Back to start",
+        check: "Check",
+        next: "Next",
+        clearSlot: "Clear box",
+        clearAll: "Clear equation",
+        msgHintSelectSlot: "Tap the box you want to fill first 💡",
+        msgNeedFillAll: "Please fill in all boxes first ✏️",
+        msgTryAgain: "Not correct yet, try again 💪",
+        msgShowAnswer: "It's not correct. Here is the right answer 🌟",
+        msgCorrect: "Great job! Wowwww! 🎉",
+        msgStartQuestion: "Read the story carefully, then fill in the equation 💛",
+        msgClearSlotNeedSelect: "Select a box before clearing it 🧽",
+        msgResetEq: "Let's clear and start the equation again ✏️",
+        topName: name => `👧 Name: ${name}`,
+        topQ: (index, total) => `Question ${index}/${total}`,
+        topScore: (score, totalAsked) => `Score: ${score}/${totalAsked}`,
+        finishPerfect: (score, total) =>
+          `Amazing! You got ${score}/${total} 🎉 You are a math star!`,
+        finishNormal: (score, total) =>
+          `You finished all ${total} problems! Score: ${score}/${total}. You can try again to improve 🌟`
+      }
+    };
+
+    // --------------- ข้อมูลโจทย์ 20 ข้อ ระคน + − × ÷ ---------------
+    const questions = [
+      {
+        story: {
+          th: "มีลูกอม 8 เม็ด แม่ให้เพิ่มมาอีก 7 เม็ด ตอนนี้มีลูกอมทั้งหมดกี่เม็ด?",
+          en: "You have 8 candies. Mom gives you 7 more. How many candies do you have in total?"
+        },
+        eqLabel: {
+          th: "ลูกอมทั้งหมด =",
+          en: "Total candies ="
+        },
+        num1: 8, num2: 7, op: "+", ans: 15
+      },
+      {
+        story: {
+          th: "มีลูกโป่ง 20 ใบ เดินเล่นแล้วแตกไป 6 ใบ จะเหลือลูกโป่งกี่ใบ?",
+          en: "There are 20 balloons. 6 balloons pop. How many balloons are left?"
+        },
+        eqLabel: {
+          th: "ลูกโป่งที่เหลือ =",
+          en: "Balloons left ="
+        },
+        num1: 20, num2: 6, op: "-", ans: 14
+      },
+      {
+        story: {
+          th: "ในถุงหนึ่งมีดินสอ 4 แท่ง ถ้ามีถุงแบบเดียวกัน 5 ถุง จะมีดินสอทั้งหมดกี่แท่ง?",
+          en: "There are 4 pencils in one bag. If there are 5 bags, how many pencils are there in total?"
+        },
+        eqLabel: {
+          th: "ดินสอทั้งหมด =",
+          en: "Total pencils ="
+        },
+        num1: 4, num2: 5, op: "×", ans: 20
+      },
+      {
+        story: {
+          th: "มีส้ม 24 ผล แบ่งให้เพื่อน 3 คนเท่า ๆ กัน เพื่อนแต่ละคนจะได้ส้มกี่ผล?",
+          en: "There are 24 oranges. They are shared equally among 3 friends. How many oranges does each friend get?"
+        },
+        eqLabel: {
+          th: "ส้มต่อคน =",
+          en: "Oranges per friend ="
+        },
+        num1: 24, num2: 3, op: "÷", ans: 8
+      },
+      {
+        story: {
+          th: "มีสติ๊กเกอร์ 9 ดวง เพื่อนให้เพิ่มมาอีก 12 ดวง จะมีสติ๊กเกอร์ทั้งหมดกี่ดวง?",
+          en: "You have 9 stickers. Your friend gives you 12 more. How many stickers do you have now?"
+        },
+        eqLabel: {
+          th: "สติ๊กเกอร์ทั้งหมด =",
+          en: "Total stickers ="
+        },
+        num1: 9, num2: 12, op: "+", ans: 21
+      },
+      {
+        story: {
+          th: "มีดินสอสี 18 แท่ง ทำหายไป 9 แท่ง จะเหลือดินสอสีอยู่กี่แท่ง?",
+          en: "You have 18 color pencils. You lose 9 of them. How many color pencils are left?"
+        },
+        eqLabel: {
+          th: "ดินสอสีที่เหลือ =",
+          en: "Color pencils left ="
+        },
+        num1: 18, num2: 9, op: "-", ans: 9
+      },
+      {
+        story: {
+          th: "บนชั้นวางมีหนังสือ 3 เล่มต่อช่อง ถ้ามี 8 ช่อง จะมีหนังสือทั้งหมดกี่เล่ม?",
+          en: "Each shelf section has 3 books. If there are 8 sections, how many books are there in total?"
+        },
+        eqLabel: {
+          th: "หนังสือทั้งหมด =",
+          en: "Total books ="
+        },
+        num1: 3, num2: 8, op: "×", ans: 24
+      },
+      {
+        story: {
+          th: "ลูกอม 35 เม็ด แบ่งให้เด็ก 5 คนเท่า ๆ กัน เด็กแต่ละคนจะได้กี่เม็ด?",
+          en: "There are 35 candies shared equally among 5 children. How many candies does each child get?"
+        },
+        eqLabel: {
+          th: "ลูกอมต่อคน =",
+          en: "Candies per child ="
+        },
+        num1: 35, num2: 5, op: "÷", ans: 7
+      },
+      {
+        story: {
+          th: "มีสติกเกอร์รูปหัวใจ 7 ดวง และสติกเกอร์รูปดาว 7 ดวง รวมกันจะมีสติกเกอร์กี่ดวง?",
+          en: "You have 7 heart stickers and 7 star stickers. How many stickers do you have in all?"
+        },
+        eqLabel: {
+          th: "สติกเกอร์ทั้งหมด =",
+          en: "Total stickers ="
+        },
+        num1: 7, num2: 7, op: "+", ans: 14
+      },
+      {
+        story: {
+          th: "มีลูกอม 40 เม็ด แบ่งให้เพื่อนแล้วไป 16 เม็ด จะเหลือลูกอมกี่เม็ด?",
+          en: "You have 40 candies. You give 16 candies to your friends. How many candies are left?"
+        },
+        eqLabel: {
+          th: "ลูกอมที่เหลือ =",
+          en: "Candies left ="
+        },
+        num1: 40, num2: 16, op: "-", ans: 24
+      },
+      {
+        story: {
+          th: "ในกล่องมีขนม 6 ชิ้น ถ้ามี 9 กล่อง จะมีขนมทั้งหมดกี่ชิ้น?",
+          en: "There are 6 snacks in one box. If there are 9 boxes, how many snacks are there in total?"
+        },
+        eqLabel: {
+          th: "ขนมทั้งหมด =",
+          en: "Total snacks ="
+        },
+        num1: 6, num2: 9, op: "×", ans: 54
+      },
+      {
+        story: {
+          th: "ผลไม้ 56 ชิ้น แบ่งใส่จานเท่า ๆ กัน 8 จาน จานละกี่ชิ้น?",
+          en: "There are 56 fruits shared equally into 8 plates. How many fruits on each plate?"
+        },
+        eqLabel: {
+          th: "ผลไม้ต่อจาน =",
+          en: "Fruits per plate ="
+        },
+        num1: 56, num2: 8, op: "÷", ans: 7
+      },
+      {
+        story: {
+          th: "แม่ซื้อนมมา 12 กล่อง พ่อซื้อเพิ่มอีก 15 กล่อง จะมีนมทั้งหมดกี่กล่อง?",
+          en: "Mom buys 12 boxes of milk. Dad buys 15 more. How many boxes of milk are there?"
+        },
+        eqLabel: {
+          th: "นมทั้งหมด =",
+          en: "Total milk boxes ="
+        },
+        num1: 12, num2: 15, op: "+", ans: 27
+      },
+      {
+        story: {
+          th: "มีดินสอ 25 แท่ง แจกเพื่อนไป 7 แท่ง จะเหลือดินสอกี่แท่ง?",
+          en: "You have 25 pencils. You give 7 pencils to friends. How many pencils are left?"
+        },
+        eqLabel: {
+          th: "ดินสอที่เหลือ =",
+          en: "Pencils left ="
+        },
+        num1: 25, num2: 7, op: "-", ans: 18
+      },
+      {
+        story: {
+          th: "ในแถวหนึ่งมีนักเรียน 5 คน ถ้ามี 6 แถว จะมีนักเรียนทั้งหมดกี่คน?",
+          en: "There are 5 students in each row. If there are 6 rows, how many students are there in total?"
+        },
+        eqLabel: {
+          th: "นักเรียนทั้งหมด =",
+          en: "Total students ="
+        },
+        num1: 5, num2: 6, op: "×", ans: 30
+      },
+      {
+        story: {
+          th: "ลูกบอล 72 ลูก แบ่งให้เด็ก 9 คนเท่า ๆ กัน เด็กแต่ละคนจะได้กี่ลูก?",
+          en: "There are 72 balls shared equally among 9 children. How many balls does each child get?"
+        },
+        eqLabel: {
+          th: "ลูกบอลต่อคน =",
+          en: "Balls per child ="
+        },
+        num1: 72, num2: 9, op: "÷", ans: 8
+      },
+      {
+        story: {
+          th: "ในกลุ่มแรกมีเด็ก 14 คน กลุ่มที่สองมีเด็ก 9 คน เด็กทั้งหมดมีกี่คน?",
+          en: "The first group has 14 children. The second group has 9. How many children are there in total?"
+        },
+        eqLabel: {
+          th: "เด็กทั้งหมด =",
+          en: "Total children ="
+        },
+        num1: 14, num2: 9, op: "+", ans: 23
+      },
+      {
+        story: {
+          th: "มีลูกอม 19 เม็ด กินไป 5 เม็ด จะเหลือลูกอมกี่เม็ด?",
+          en: "You have 19 candies. You eat 5 of them. How many candies are left?"
+        },
+        eqLabel: {
+          th: "ลูกอมที่เหลือ =",
+          en: "Candies left ="
+        },
+        num1: 19, num2: 5, op: "-", ans: 14
+      },
+      {
+        story: {
+          th: "ดอกไม้ 8 ดอกต่อแจกัน ถ้ามี 7 แจกัน จะมีดอกไม้ทั้งหมดกี่ดอก?",
+          en: "There are 8 flowers in each vase. If there are 7 vases, how many flowers are there in total?"
+        },
+        eqLabel: {
+          th: "ดอกไม้ทั้งหมด =",
+          en: "Total flowers ="
+        },
+        num1: 8, num2: 7, op: "×", ans: 56
+      },
+      {
+        story: {
+          th: "นิตยสาร 48 เล่ม แบ่งใส่ชั้นเท่า ๆ กัน 6 ชั้น ชั้นละกี่เล่ม?",
+          en: "There are 48 magazines shared equally on 6 shelves. How many magazines on each shelf?"
+        },
+        eqLabel: {
+          th: "นิตยสารต่อชั้น =",
+          en: "Magazines per shelf ="
+        },
+        num1: 48, num2: 6, op: "÷", ans: 8
+      }
+    ];
+
+    // --------------- STATE ---------------
+    let currentLang = "th";
+    let currentIndex = 0; // 0-based
+    let currentSlots = [];
+    let selectedSlotIndex = null;
+    let attempts = 0;
+    let score = 0;
+    let studentName = "";
+
+    // --------------- DOM ---------------
+    const startScreen = document.getElementById("start-screen");
+    const gameScreen = document.getElementById("game-screen");
+
+    const titleText = document.getElementById("title-text");
+    const subtitleDetail = document.getElementById("subtitle-detail");
+    const labelName = document.getElementById("label-name");
+    const nameInput = document.getElementById("student-name");
+    const howText = document.getElementById("subtitle-how");
+    const startBtn = document.getElementById("start-btn");
+
+    const langButtons = Array.from(document.querySelectorAll(".lang-btn"));
+
+    const nameDisplay = document.getElementById("name-display");
+    const qDisplay = document.getElementById("q-display");
+    const scoreDisplay = document.getElementById("score-display");
+    const questionText = document.getElementById("question-text");
+    const equationArea = document.getElementById("equation-area");
+    const messageArea = document.getElementById("message-area");
+
+    const backHomeBtn = document.getElementById("back-home-btn");
+    const checkBtn = document.getElementById("check-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const keypadButtons = Array.from(document.querySelectorAll(".key-btn"));
+    const clearSlotBtn = document.getElementById("clear-slot");
+    const clearAllBtn = document.getElementById("clear-all");
+
+    // --------------- Helper UI ---------------
+    function setMessage(text, emoji) {
+      messageArea.innerHTML = "";
+      if (emoji) {
+        const spanEmoji = document.createElement("span");
+        spanEmoji.className = "emoji";
+        spanEmoji.textContent = emoji;
+        messageArea.appendChild(spanEmoji);
+      }
+      const spanText = document.createElement("span");
+      spanText.textContent = text || "";
+      messageArea.appendChild(spanText);
+    }
+
+    function clearSelectionHighlight() {
+      const allSlots = equationArea.querySelectorAll(".slot");
+      allSlots.forEach(s => s.classList.remove("selected"));
+    }
+
+    function setSlotsDisabled(disabled) {
+      const allSlots = equationArea.querySelectorAll(".slot");
+      allSlots.forEach(s => {
+        if (disabled) {
+          s.classList.add("disabled");
+        } else {
+          s.classList.remove("disabled");
+        }
+      });
+    }
+
+    function renderTopBar() {
+      const t = uiText[currentLang];
+      const total = questions.length;
+      qDisplay.textContent = t.topQ(currentIndex + 1, total);
+      scoreDisplay.textContent = t.topScore(score, currentIndex + 1);
+      nameDisplay.textContent = t.topName(studentName || (currentLang === "th" ? "นักเรียน" : "Student"));
+    }
+
+    function updateStartScreenTexts() {
+      const t = uiText[currentLang];
+      titleText.textContent = t.title;
+      subtitleDetail.textContent = t.subtitleDetail;
+      labelName.textContent = t.labelName;
+      nameInput.placeholder = t.namePlaceholder;
+      howText.textContent = t.how;
+      startBtn.textContent = t.startBtn;
+
+      backHomeBtn.textContent = t.backHome;
+      checkBtn.textContent = t.check;
+      nextBtn.textContent = t.next;
+      clearSlotBtn.textContent = t.clearSlot;
+      clearAllBtn.textContent = t.clearAll;
+
+      if (studentName) {
+        nameDisplay.textContent = t.topName(studentName);
+      }
+      renderTopBar();
+    }
+
+    // --------------- แสดงโจทย์ ---------------
+    function renderQuestion() {
+      const t = uiText[currentLang];
+      const q = questions[currentIndex];
+
+      selectedSlotIndex = null;
+      attempts = 0;
+      currentSlots = [];
+
+      questionText.textContent = q.story[currentLang];
+
+      equationArea.innerHTML = "";
+
+      const row = document.createElement("div");
+      row.className = "equation-row";
+
+      const labelDiv = document.createElement("div");
+      labelDiv.className = "equation-line-label";
+      labelDiv.textContent = q.eqLabel[currentLang];
+      row.appendChild(labelDiv);
+
+      const slotsWrap = document.createElement("div");
+      slotsWrap.className = "equation-line-slots";
+
+      const slotDefs = [
+        { type: "num", correct: q.num1 },
+        { type: "op", correct: q.op },
+        { type: "num", correct: q.num2 },
+        { type: "ans", correct: q.ans }
+      ];
+      currentSlots = slotDefs.map(s => ({ ...s, value: "" }));
+
+      currentSlots.forEach((slot, idx) => {
+        if (slot.type === "ans") {
+          const eqSpan = document.createElement("span");
+          eqSpan.className = "slot-label";
+          eqSpan.textContent = "=";
+          slotsWrap.appendChild(eqSpan);
+        }
+
+        const div = document.createElement("div");
+        if (slot.type === "op") {
+          div.className = "circle-slot slot";
+        } else if (slot.type === "ans") {
+          div.className = "square-slot answer-slot slot";
+        } else {
+          div.className = "square-slot slot";
+        }
+        div.dataset.index = idx;
+        div.textContent = "";
+        div.addEventListener("click", () => {
+          if (div.classList.contains("disabled")) return;
+          selectedSlotIndex = idx;
+          clearSelectionHighlight();
+          div.classList.add("selected");
+          playBeep(520);
+        });
+
+        slotsWrap.appendChild(div);
+      });
+
+      row.appendChild(slotsWrap);
+      equationArea.appendChild(row);
+
+      setSlotsDisabled(false);
+      renderTopBar();
+      setMessage(t.msgStartQuestion, "📝");
+    }
+
+    function fillSlotsWithCorrectAnswer() {
+      const slotDivs = equationArea.querySelectorAll(".slot");
+      slotDivs.forEach(div => {
+        const idx = Number(div.dataset.index);
+        const slot = currentSlots[idx];
+        if (!slot) return;
+        if (slot.type === "num" || slot.type === "ans") {
+          div.textContent = String(slot.correct);
+          slot.value = String(slot.correct);
+        } else if (slot.type === "op") {
+          div.textContent = slot.correct;
+          slot.value = slot.correct;
+        }
+      });
+    }
+
+    // --------------- ตรวจคำตอบ ---------------
+    function checkAnswer() {
+      const t = uiText[currentLang];
+      playBeep(440);
+
+      for (let i = 0; i < currentSlots.length; i++) {
+        const div = equationArea.querySelector(`.slot[data-index="${i}"]`);
+        const val = div ? (div.textContent || "").trim() : "";
+        if (!val) {
+          setMessage(t.msgNeedFillAll, "🙂");
+          return;
+        }
+      }
+
+      let allCorrect = true;
+      for (let i = 0; i < currentSlots.length; i++) {
+        const slot = currentSlots[i];
+        const div = equationArea.querySelector(`.slot[data-index="${i}"]`);
+        if (!slot || !div) continue;
+        const val = (div.textContent || "").trim();
+        currentSlots[i].value = val;
+
+        if (slot.type === "num" || slot.type === "ans") {
+          const userVal = Number(val);
+          if (userVal !== Number(slot.correct)) {
+            allCorrect = false;
+          }
+        } else if (slot.type === "op") {
+          if (val !== slot.correct) {
+            allCorrect = false;
+          }
+        }
+      }
+
+      if (allCorrect) {
+        score++;
+        playSuccessSound();
+        launchConfetti(70);
+        setSlotsDisabled(true);
+        renderTopBar();
+        setMessage(t.msgCorrect, "😊");
+      } else {
+        attempts++;
+        playFailSound();
+        if (attempts === 1) {
+          setMessage(t.msgTryAgain, "😅");
+        } else {
+          fillSlotsWithCorrectAnswer();
+          setSlotsDisabled(true);
+          setMessage(t.msgShowAnswer, "📘");
+        }
+      }
+    }
+
+    function goToNextQuestion() {
+      const t = uiText[currentLang];
+      playBeep(500);
+      if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+      } else {
+        setSlotsDisabled(true);
+        playFinishSetSound();
+        launchConfetti(120);
+        const total = questions.length;
+        const msg =
+          score === total
+            ? t.finishPerfect(score, total)
+            : t.finishNormal(score, total);
+        setMessage(msg, "🏆");
+      }
+    }
+
+    function resetAllSlots() {
+      const t = uiText[currentLang];
+      const slotDivs = equationArea.querySelectorAll(".slot");
+      slotDivs.forEach(div => {
+        if (!div.classList.contains("disabled")) {
+          div.textContent = "";
+        }
+      });
+      currentSlots = currentSlots.map(s => (s ? { ...s, value: "" } : s));
+      attempts = 0;
+      setSlotsDisabled(false);
+      setMessage(t.msgResetEq, "🔁");
+    }
+
+    // --------------- เปลี่ยนภาษา ---------------
+    langButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const lang = btn.dataset.lang;
+        if (!lang || lang === currentLang) return;
+        currentLang = lang;
+        langButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        updateStartScreenTexts();
+
+        if (gameScreen.style.display === "block") {
+          renderQuestion();
+        }
+        playBeep(700);
+      });
+    });
+
+    // --------------- เริ่มเกม ---------------
+    startBtn.addEventListener("click", () => {
+      playBeep(620);
+      const t = uiText[currentLang];
+      const name = nameInput.value.trim();
+      studentName = name || (currentLang === "th" ? "นักเรียน" : "Student");
+      currentIndex = 0;
+      score = 0;
+
+      nameDisplay.textContent = t.topName(studentName);
+      renderTopBar();
+
+      startScreen.style.display = "none";
+      gameScreen.style.display = "block";
+      renderQuestion();
+    });
+
+    // --------------- ปุ่มควบคุมหน้าเกม ---------------
+    backHomeBtn.addEventListener("click", () => {
+      playBeep(380);
+      gameScreen.style.display = "none";
+      startScreen.style.display = "block";
+      setMessage("", "");
+      updateStartScreenTexts();
+    });
+
+    checkBtn.addEventListener("click", () => {
+      checkAnswer();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      goToNextQuestion();
+    });
+
+    keypadButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const key = btn.dataset.key;
+        if (!key) return;
+        playBeep(700);
+
+        const t = uiText[currentLang];
+
+        if (selectedSlotIndex === null) {
+          setMessage(t.msgHintSelectSlot, "👉");
+          return;
+        }
+
+        const slot = currentSlots[selectedSlotIndex];
+        const div = equationArea.querySelector(`.slot[data-index="${selectedSlotIndex}"]`);
+        if (!slot || !div || div.classList.contains("disabled")) return;
+
+        if (slot.type === "op") {
+          if (key === "×" || key === "÷" || key === "+" || key === "-") {
+            div.textContent = key;
+          }
+        } else if (slot.type === "num" || slot.type === "ans") {
+          if (/[0-9]/.test(key)) {
+            const currentText = (div.textContent || "").trim();
+            if (currentText.length >= 3) return;
+            div.textContent = currentText + key;
+          }
+        }
+      });
+    });
+
+    clearSlotBtn.addEventListener("click", () => {
+      const t = uiText[currentLang];
+      playBeep(360);
+      if (selectedSlotIndex === null) {
+        setMessage(t.msgClearSlotNeedSelect, "🧼");
+        return;
+      }
+      const div = equationArea.querySelector(`.slot[data-index="${selectedSlotIndex}"]`);
+      if (div && !div.classList.contains("disabled")) {
+        div.textContent = "";
+      }
+    });
+
+    clearAllBtn.addEventListener("click", () => {
+      playBeep(340);
+      resetAllSlots();
+    });
+
+    // เรียกครั้งแรก
+    updateStartScreenTexts();
+  </script>
+</body>
+</html>
